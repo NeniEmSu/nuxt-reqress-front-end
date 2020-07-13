@@ -25,23 +25,23 @@
 [x] Users page- /users - we get a list of Users and display them on page.
 [ ] User page- /users/:id - display single user.
 [x] User page - /user/id
-    - [ ] we receive data from the  api, and we display them in the same card as on the page of all users,
-    - [ ] only without the "see" button.  
+    - [x] we receive data from the  api, and we display them in the same card as on the page of all users,
+    - [x] only without the "see" button.  
     - On this page,
         - [ ] deletion +
         - [ ] editing is also available, similar to the page of all
 
 ### Requirements
 
-1. [ ] Add pagination
-2. [ ] User card includes:
-    - [ ] Name
-    - [ ] email
-    - [ ] Buttons: Delete, Edit, View
-3. [ ] Button to add a new user
-    [ ] When you click delete, delete the user through ai + locally delete the user.  
-    [ ] When you click on edit, we show the modal window for editing the user, we send the data through api + we update the user data locally.  
-    [ ] When you click on view, go to the user page.  When you click on add a new user, the modal window for adding (it is also editing) - we send data via api + we add the user locally.
+1. [x] Add pagination
+2. [x] User card includes:
+    - [x] Name
+    - [x] email
+    - [x] Buttons: Delete, Edit, View
+3. [x] Button to add a new user
+    [x] When you click delete, delete the user through api + locally delete the user.  
+    [x] When you click on edit, we show the modal window for editing the user, we send the data through api + we update the user data locally.  
+    [x] When you click on view, go to the user page.  When you click on add a new user, the modal window for adding (it is also editing) - we send data via api + we add the user locally.
 
 ## Modal window for adding / editing a user
 
