@@ -6,56 +6,46 @@
       </h1>
 
       <template v-if="loading">
-        <content-placeholders>
-          <content-placeholders-text class="mt-5" :lines="10" />
+        <content-placeholders class="mt-2">
+          <content-placeholders-text class="my-2" :lines="10" />
         </content-placeholders>
       </template>
 
       <template v-else>
-        <section class="mt-2 container">
-          <!-- <UserForm
+        <section class="mt-2">
+          <UserForm
             v-if="addState"
             :adding="adding"
             :user-details="userDetails"
             @Call-Get-Fuction="callGetUsers"
             @Reset-State="resetFormState"
             @Close-Form="addState = false"
-          /> -->
+          />
           <div class="my-2">
             <div class="d-flex">
-              <!-- <button class="btn btn-info my-3" @click="initForm">
+              <button class="btn btn-info my-3" @click="initForm">
                 {{ addState ? 'Cancel' : 'Add User' }}
-              </button> -->
-              <!-- <b-form-group class="col-sm ml-auto my-auto">
-                <b-input-group>
-                  <b-input-group-prepend is-text>
-                    <b-icon icon="search" font-scale="1.5"> </b-icon>
-                  </b-input-group-prepend>
-                  <b-input
-                    v-model="search"
-                    type="text"
-                    placeholder="Search by Username"
-                    required
-                    name="Search"
-                  />
-                </b-input-group>
-              </b-form-group> -->
+              </button>
             </div>
 
             <b-table
               striped
               hover
               responsive
+              show-empty
+              :busy.sync="loading"
+              :items="items"
               :fields="fields"
+              :current-page="currentPage"
+              :per-page="0"
               :sort-by.sync="sortBy"
               :sort-desc.sync="sortDesc"
               sticky-header="600px"
-              :items="items"
             >
               <template v-slot:thead-top="">
                 <b-tr>
-                  <b-th colspan="1" variant="primary">Index</b-th>
-                  <b-th colspan="4" variant="secondary">
+                  <b-th colspan="1" variant="primary">Image</b-th>
+                  <b-th colspan="3" variant="secondary">
                     User Data
                   </b-th>
                   <b-th colspan="3" variant="success">
@@ -90,7 +80,7 @@
                   @click="editUser(data.item.id)"
                 >
                   <b-icon
-                    icon="pencil"
+                    icon="pencil-square"
                     color="seconday"
                     variant="seconday"
                     font-scale="1.5"
@@ -118,7 +108,6 @@
                 <b-button
                   class="ml-auto"
                   variant="light"
-                  :disabled="deleteLoading"
                   @click="deleteUser(data.item.id)"
                 >
                   <b-icon
@@ -130,6 +119,12 @@
                 </b-button>
               </template>
             </b-table>
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="rows"
+              :per-page="perPage"
+              aria-controls="my-table"
+            ></b-pagination>
           </div>
         </section>
       </template>
@@ -142,22 +137,34 @@ export default {
   name: 'Users',
   data() {
     return {
+      userDetails: {
+        first_name: null,
+        last_name: null,
+        email: null,
+        avatar: null,
+      },
       users: [],
       loading: false,
+      addState: false,
+      adding: true,
       pageNumber: 0,
       numberOfPages: 0,
-      sortBy: 'Total',
-      sortDesc: true,
+      sortBy: 'first_name',
+      sortDesc: false,
+      perPage: 3,
+      currentPage: 1,
+      rows: 0,
       fields: [
-        { key: 'No', stickyColumn: true, isRowHeader: true, sortable: true },
         {
           key: 'avatar',
+          stickyColumn: true,
+          isRowHeader: true,
           sortable: false,
         },
         {
           key: 'first_name',
           stickyColumn: true,
-          sortable: false,
+          sortable: true,
         },
         {
           key: 'last_name',
@@ -186,7 +193,6 @@ export default {
     items() {
       return this.users.map((user, index) => {
         return {
-          No: index + 1,
           id: user.id,
           first_name: user.first_name,
           last_name: user.last_name,
@@ -199,10 +205,32 @@ export default {
       })
     },
   },
+  watch: {
+    currentPage: {
+      handler(value) {
+        this.getUsers()
+      },
+    },
+  },
   created() {
     this.getUsers()
   },
   methods: {
+    initForm() {
+      this.addState = !this.addState
+    },
+    resetFormState() {
+      this.userDetails = {
+        first_name: null,
+        last_name: null,
+        email: null,
+        avatar: null,
+      }
+    },
+    callGetUsers() {
+      this.getAllUsers()
+      this.addState = false
+    },
     async getUsers() {
       const config = {
         headers: {
@@ -212,19 +240,33 @@ export default {
       this.loading = true
       try {
         const response = await this.$axios.$get(
-          `${process.env.BACKEND_ENDPOINT}`,
+          `${process.env.BACKEND_ENDPOINT}?page=${this.currentPage}&per_page=3&delay=3`,
           config
         )
         const data = response
         this.users = data.data
-        this.pageNumber = data.page
-        this.numberOfPages = data.total_pages
+
+        this.rows = data.total
       } catch (error) {
         this.$swal('Error', error.message, 'error')
       } finally {
         this.loading = false
       }
     },
+  },
+  head() {
+    return {
+      title: 'Users',
+      titleTemplate: '%s - Reqress Nuxt Frontend!',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'An interface that allows to: View a list of users, add a new user, navigate to edit an existing user, delete a user.',
+        },
+      ],
+    }
   },
 }
 </script>
