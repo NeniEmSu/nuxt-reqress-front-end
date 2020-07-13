@@ -2,7 +2,7 @@
   <b-navbar toggleable="sm" type="dark" variant="dark">
     <b-container>
       <b-navbar-brand to="/">
-        <b>REQ|RES</b>
+        <b>REQ | RES</b>
         +
         <b-img
           width="26px"
