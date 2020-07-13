@@ -20,11 +20,11 @@
 
 ### Navigation
 
-[ ] Home and user page.  
-[ ] Home page - / - just a blank page.
-[ ] Users page- /users - we get a list of Users and display them on page.
+[x] Home and user page.  
+[x] Home page - / - just a blank page.
+[x] Users page- /users - we get a list of Users and display them on page.
 [ ] User page- /users/:id - display single user.
-[ ] User page - /user/id
+[x] User page - /user/id
     - [ ] we receive data from the  api, and we display them in the same card as on the page of all users,
     - [ ] only without the "see" button.  
     - On this page,
