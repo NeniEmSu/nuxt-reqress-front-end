@@ -60,7 +60,7 @@ export default {
         .get(`${process.env.BACKEND_ENDPOINT}`)
         .then((res) => {
           return res.data.data.map((user) => {
-            return `/${user.id}`
+            return `/users/${user.id}`
           })
         })
       return Promise.all([userRoute]).then((values) => {
