@@ -1,18 +1,10 @@
+import axios from 'axios'
+require('dotenv').config()
 export default {
-  /*
-   ** Nuxt rendering mode
-   ** See https://nuxtjs.org/api/configuration-mode
-   */
   mode: 'universal',
-  /*
-   ** Nuxt target
-   ** See https://nuxtjs.org/api/configuration-target
-   */
+
   target: 'server',
-  /*
-   ** Headers of the page
-   ** See https://nuxtjs.org/api/configuration-head
-   */
+
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -26,46 +18,64 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
-  /*
-   ** Global CSS
-   */
-  css: [],
-  /*
-   ** Plugins to load before mounting the App
-   ** https://nuxtjs.org/guide/plugins
-   */
-  plugins: [],
-  /*
-   ** Auto import components
-   ** See https://nuxtjs.org/api/configuration-components
-   */
+
+  css: ['sweetalert2/dist/sweetalert2.min.css'],
+
+  plugins: [
+    '~/plugins/vue-placeholders.js',
+    '~/plugins/vuelidate.js',
+    '~/plugins/bootstrap-vue-icon',
+  ],
   components: true,
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module',
-  ],
-  /*
-   ** Nuxt.js modules
-   */
+  buildModules: ['@nuxtjs/eslint-module', '@nuxtjs/stylelint-module'],
+
   modules: [
-    // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/dotenv',
+    'vue-sweetalert2/nuxt',
   ],
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
-  axios: {},
-  /*
-   ** Build configuration
-   ** See https://nuxtjs.org/api/configuration-build/
-   */
-  build: {},
+
+  axios: {
+    proxy: false,
+  },
+  robots: () => {
+    return {
+      Sitemap: '/sitemap.xml',
+    }
+  },
+
+  sitemap: {
+    path: '/sitemap.xml',
+    hostname: process.env.BASE_URL,
+    cacheTime: 1000 * 60 * 15,
+  },
+
+  generate: {
+    routes() {
+      const userRoute = axios
+        .get(`${process.env.BACKEND_USERS_ENDPOINT}`)
+        .then((res) => {
+          return res.data.map((user) => {
+            return `/users/${user.id}/${user.username}`
+          })
+        })
+      const postsRoute = axios
+        .get(`${process.env.BACKEND_POSTS_ENDPOINT}`)
+        .then((res) => {
+          return res.data.map((post) => {
+            return `/blogs/${post.id}/${post.title}`
+          })
+        })
+      return Promise.all([userRoute, postsRoute]).then((values) => {
+        return values.join().split(',')
+      })
+    },
+  },
+  build: {
+    extend(config, ctx) {},
+  },
 }
