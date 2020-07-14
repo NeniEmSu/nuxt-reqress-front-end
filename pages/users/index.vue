@@ -212,7 +212,9 @@ export default {
     },
   },
   created() {
-    this.getUsers(this.currentPage)
+    if (this.$store.state.users.users.length < 1) {
+      this.getUsers(this.currentPage)
+    }
   },
   methods: {
     ...mapActions('users', ['getUsers', 'deleteSingleUser']),
