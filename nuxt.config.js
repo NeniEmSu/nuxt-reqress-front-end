@@ -59,8 +59,8 @@ export default {
           },
           user: {
             url: `${process.env.BACKEND_ENDPOINT}/api/login`,
-            method: 'get',
-            propertyName: 'user',
+            method: 'post',
+            propertyName: 'email',
           },
         },
         tokenRequired: true,
