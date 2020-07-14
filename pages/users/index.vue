@@ -133,6 +133,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Users',
   data() {
@@ -143,17 +144,14 @@ export default {
         email: null,
         avatar: null,
       },
-      users: [],
-      loading: false,
       addState: false,
       adding: true,
       pageNumber: 0,
       numberOfPages: 0,
-      sortBy: 'first_name',
+      sortBy: 'total',
       sortDesc: false,
       perPage: 3,
       currentPage: 1,
-      rows: 0,
       fields: [
         {
           key: 'avatar',
@@ -168,7 +166,7 @@ export default {
         },
         {
           key: 'last_name',
-          sortable: false,
+          sortable: true,
         },
         {
           key: 'email',
@@ -190,6 +188,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('users', ['users', 'rows', 'loading', 'errors']),
     items() {
       return this.users.map((user, index) => {
         return {
@@ -208,14 +207,15 @@ export default {
   watch: {
     currentPage: {
       handler(value) {
-        this.getUsers()
+        this.getUsers(this.currentPage)
       },
     },
   },
   created() {
-    this.getUsers()
+    this.getUsers(this.currentPage)
   },
   methods: {
+    ...mapActions('users', ['getUsers', 'deleteSingleUser']),
     initForm() {
       this.addState = !this.addState
     },
@@ -226,68 +226,10 @@ export default {
         email: null,
         avatar: null,
       }
-    },
-    callGetUsers() {
-      this.getUsers()
       this.addState = false
     },
-    async getUsers() {
-      const config = {
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      }
-      this.loading = true
-      try {
-        const response = await this.$axios.$get(
-          `${process.env.BACKEND_ENDPOINT}?page=${this.currentPage}&per_page=3&delay=3`,
-          config
-        )
-        const data = response
-        this.users = data.data
-
-        this.rows = data.total
-      } catch (error) {
-        this.$swal('Error', error.message, 'error')
-      } finally {
-        this.loading = false
-      }
-    },
     deleteUser(id) {
-      this.deleteLoading = true
-      this.$swal({
-        name: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!',
-      }).then((willDelete) => {
-        if (willDelete.value) {
-          this.$axios
-            .$delete(`${process.env.BACKEND_ENDPOINT}/${id}`)
-            .then((response) => {
-              this.deleteLoading = false
-              this.$router.push('/users')
-              this.$swal({
-                text: "Poof! You've sucessfully deleted that user!",
-                icon: 'success',
-              })
-            })
-            .catch((error) => {
-              this.deleteLoading = false
-              this.$swal({
-                name: 'Somethimg went wrong!',
-                text: error,
-                icon: 'error',
-              })
-            })
-        } else {
-          this.deleteLoading = false
-          this.$swal("That user's data is safe!")
-        }
-      })
+      this.deleteSingleUser(id)
     },
   },
   head() {

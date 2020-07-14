@@ -209,6 +209,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { required, minLength, email, url } from 'vuelidate/lib/validators'
 export default {
   props: {
@@ -276,6 +277,7 @@ export default {
   },
 
   methods: {
+    ...mapActions('users', ['addUser']),
     closeForm() {
       this.$emit('Close-Form')
     },
@@ -286,28 +288,33 @@ export default {
     },
 
     async addNewUser() {
-      const config = {
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      }
-      try {
-        this.addLoading = true
-        await this.$axios
-          .$post(`${process.env.BACKEND_ENDPOINT}`, this.userDetails, config)
-          .then((response) => {
-            this.$emit('Reset-State')
-            this.$emit('Call-Get-Fuction')
-            this.$swal(
-              'Success',
-              `New User: ${response.first_name}, with email address: ${response.email} was added successfully`,
-              'success'
-            )
-          })
-      } catch (error) {
-        this.$swal('Error', `Something Went wrong, \n Error: ${error}`, 'error')
-      }
+      this.addLoading = true
+      await this.addUser(this.userDetails)
+      await this.$emit('Reset-State')
+      // this.$v.$reset()
       this.addLoading = false
+      // const config = {
+      //   headers: {
+      //     'Content-type': 'application/json; charset=UTF-8',
+      //   },
+      // }
+      // try {
+      //   this.addLoading = true
+      //   await this.$axios
+      //     .$post(`${process.env.BACKEND_ENDPOINT}`, this.userDetails, config)
+      //     .then((response) => {
+      //       this.$emit('Reset-State')
+      //       this.$emit('Call-Get-Fuction')
+      //       this.$swal(
+      //         'Success',
+      //         `New User: ${response.first_name}, with email address: ${response.email} was added successfully`,
+      //         'success'
+      //       )
+      //     })
+      // } catch (error) {
+      //   this.$swal('Error', `Something Went wrong, \n Error: ${error}`, 'error')
+      // }
+      // this.addLoading = false
     },
 
     async editUser() {
