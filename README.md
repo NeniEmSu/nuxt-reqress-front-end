@@ -65,6 +65,7 @@
 ## Todos****
 
 - [ ] fix vuex error for mutating state outside mutations.
+- [ ] more error handling
 
 ## Build Setup
 

@@ -17,7 +17,6 @@
             v-if="addState"
             :adding="adding"
             :user-details="userDetails"
-            @Call-Get-Fuction="callGetUsers"
             @Reset-State="resetFormState"
             @Close-Form="addState = false"
           />
@@ -219,6 +218,8 @@ export default {
   methods: {
     ...mapActions('users', ['getUsers', 'deleteSingleUser']),
     initForm() {
+      this.resetFormState()
+      this.adding = true
       this.addState = !this.addState
     },
     resetFormState() {
@@ -228,7 +229,11 @@ export default {
         email: null,
         avatar: null,
       }
-      this.addState = false
+    },
+    editUser(id) {
+      this.userDetails = this.$store.getters['users/getuserById'](id)
+      this.adding = false
+      this.addState = true
     },
     deleteUser(id) {
       this.deleteSingleUser(id)

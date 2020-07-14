@@ -116,16 +116,7 @@ export default {
   name: 'IndividualUser',
   data() {
     return {
-      // userDetails: {
-      //   first_name: null,
-      //   last_name: null,
-      //   email: null,
-      //   avatar: null,
-      // },
-      // user: {},
-      // company: {},
       editState: false,
-      // loading: false,
       deleteLoading: false,
     }
   },
@@ -136,13 +127,17 @@ export default {
     },
   },
   created() {
-    if (this.$route.params.id <= 12) {
-      this.getSingleUser(this.$route.params.id)
-    } else {
+    if (
+      this.$store.state.users.users.find(
+        (user) => user.id === this.$route.params.id
+      )
+    ) {
       this.$store.commit(
         'users/SET_USER',
         this.$store.getters['users/getuserById'](this.$route.params.id)
       )
+    } else {
+      this.getSingleUser(this.$route.params.id)
     }
   },
   methods: {

@@ -121,7 +121,7 @@ export const actions = {
       )
       this.$swal(
         'Success',
-        `New User: ${response.data.first_name}, with email address: ${response.data.email} was added successfully`,
+        `User: ${response.data.first_name}, with email address: ${response.data.email} was edited successfully`,
         'success'
       )
       const data = response.data
