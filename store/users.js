@@ -65,7 +65,7 @@ export const actions = {
       )
       this.$swal(
         'Success',
-        `New User: ${response.first_name}, with email address: ${response.email} was added successfully`,
+        `New User: ${response.data.first_name}, with email address: ${response.data.email} was added successfully`,
         'success'
       )
       const data = await response.data
@@ -118,6 +118,11 @@ export const actions = {
         `${URL}/${updatedUser.id}`,
         updatedUser,
         config
+      )
+      this.$swal(
+        'Success',
+        `New User: ${response.data.first_name}, with email address: ${response.data.email} was added successfully`,
+        'success'
       )
       const data = response.data
       commit('UPDATE_USER', data)

@@ -34,11 +34,11 @@
     <template v-else>
       <div class="row mt-2">
         <div class="col-sm-12">
-          <b-alert v-if="error" show variant="danger">
+          <b-alert v-if="errors.length > 1" show variant="danger">
             <h4 class="alert-heading">
               Error
             </h4>
-            <p>{{ error }}</p>
+            <p>{{ errors }}</p>
           </b-alert>
 
           <UserForm
@@ -123,7 +123,6 @@ export default {
       //   avatar: null,
       // },
       // user: {},
-      error: null,
       // company: {},
       editState: false,
       // loading: false,
@@ -131,9 +130,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('users', ['user', 'company', 'loading', 'error']),
+    ...mapState('users', ['user', 'company', 'loading', 'errors']),
     userDetails() {
-      return this.$store.state.users.user
+      return this.user
     },
   },
   created() {

@@ -53,14 +53,14 @@
 ## Bonus users (performed as desired)
 
 1. [ ] In the navigation panel, display the data of the last user who passed.  
-2. [ ] Display the data loading loaders while the requests are in progress,
+2. [x] Display the data loading loaders while the requests are in progress,
     concerns:
-    - [ ] receiving all users (here you can add the deley parameter delay=3 to the request, where 3 is the seconds of waiting for the request),
-        - [ ] adding / editing the user
-        - [ ] (the loader on the form),
-        - [ ] deleting.  
-3. [ ] Notifications of success / failure of the operation.  
-4. [ ] Validation of form data
+    - [x] receiving all users (here you can add the deley parameter delay=3 to the request, where 3 is the seconds of waiting for the request),
+        - [x] adding / editing the user
+        - [x] (the loader on the form),
+        - [x] deleting.  
+3. [x] Notifications of success / failure of the operation.  
+4. [x] Validation of form data
 
 ## Build Setup
 
