@@ -43,6 +43,10 @@
   </b-navbar>
 </template>
 
+<script>
+export default {}
+</script>
+
 <style scoped>
 .nuxt-link-exact-active {
   color: rgba(255, 255, 255, 1) !important;
