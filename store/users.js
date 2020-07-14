@@ -53,6 +53,7 @@ export const actions = {
 
   async addUser({ commit }, userDetails) {
     try {
+      commit('CLEAR_ERRORS')
       const response = await axios.post(
         `${URL}`,
         {
@@ -70,6 +71,27 @@ export const actions = {
       )
       const data = await response.data
       commit('ADD_NEW_USER', data)
+    } catch (error) {
+      commit('SET_ERRORS', error)
+      this.$swal('Error', error.message, 'error')
+    }
+  },
+
+  async updateUser({ commit }, updatedUser) {
+    try {
+      commit('CLEAR_ERRORS')
+      const response = await axios.put(
+        `${URL}/${updatedUser.id}`,
+        updatedUser,
+        config
+      )
+      this.$swal(
+        'Success',
+        `User: ${response.data.first_name}, with email address: ${response.data.email} was edited successfully`,
+        'success'
+      )
+      const data = response.data
+      commit('UPDATE_USER', data)
     } catch (error) {
       commit('SET_ERRORS', error)
       this.$swal('Error', error.message, 'error')
@@ -110,26 +132,6 @@ export const actions = {
         this.$swal("That user's data is safe!")
       }
     })
-  },
-
-  async updateUser({ commit }, updatedUser) {
-    try {
-      const response = await axios.put(
-        `${URL}/${updatedUser.id}`,
-        updatedUser,
-        config
-      )
-      this.$swal(
-        'Success',
-        `User: ${response.data.first_name}, with email address: ${response.data.email} was edited successfully`,
-        'success'
-      )
-      const data = response.data
-      commit('UPDATE_USER', data)
-    } catch (error) {
-      commit('SET_ERRORS', error)
-      this.$swal('Error', error.message, 'error')
-    }
   },
 }
 

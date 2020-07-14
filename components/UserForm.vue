@@ -291,6 +291,7 @@ export default {
       this.addLoading = true
       await this.addUser(this.userDetails)
       await this.$emit('Reset-State')
+      await this.$emit('Close-Form')
       // this.$v.$reset()
       this.addLoading = false
     },

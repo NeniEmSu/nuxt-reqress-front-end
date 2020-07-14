@@ -34,12 +34,19 @@
     <template v-else>
       <div class="row mt-2">
         <div class="col-sm-12">
-          <b-alert v-if="errors.length > 1" show variant="danger">
-            <h4 class="alert-heading">
-              Error
-            </h4>
-            <p>{{ errors }}</p>
-          </b-alert>
+          <template v-if="errors.length > 1">
+            <b-alert
+              v-for="(error, index) in errors"
+              :key="index"
+              show
+              variant="danger"
+            >
+              <h4 class="alert-heading">
+                Error
+              </h4>
+              <p>{{ error.message }}</p>
+            </b-alert>
+          </template>
 
           <UserForm
             v-if="editState"
