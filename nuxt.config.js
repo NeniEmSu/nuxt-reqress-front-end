@@ -35,9 +35,41 @@ export default {
   modules: [
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     '@nuxtjs/dotenv',
     'vue-sweetalert2/nuxt',
   ],
+
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/',
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: `${process.env.BACKEND_ENDPOINT}/api/login`,
+            method: 'post',
+            propertyName: 'token',
+          },
+          logout: {
+            url: `${process.env.BACKEND_ENDPOINT}/api/logout`,
+            method: 'post',
+          },
+          user: {
+            url: `${process.env.BACKEND_ENDPOINT}/api/login`,
+            method: 'get',
+            propertyName: 'user',
+          },
+        },
+        tokenRequired: true,
+        tokenType: '',
+        globalToken: true,
+        autoFetchUser: true,
+      },
+    },
+  },
 
   axios: {
     proxy: false,
