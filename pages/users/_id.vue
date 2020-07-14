@@ -165,6 +165,42 @@ export default {
         this.loading = false
       }
     },
+    deleteUser(id) {
+      this.deleteLoading = true
+      this.$swal({
+        name: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((willDelete) => {
+        if (willDelete.value) {
+          this.$axios
+            .$delete(`${process.env.BACKEND_ENDPOINT}/${id}`)
+            .then((response) => {
+              this.deleteLoading = false
+              this.$router.push('/users')
+              this.$swal({
+                text: "Poof! You've sucessfully deleted that user!",
+                icon: 'success',
+              })
+            })
+            .catch((error) => {
+              this.deleteLoading = false
+              this.$swal({
+                name: 'Somethimg went wrong!',
+                text: error,
+                icon: 'error',
+              })
+            })
+        } else {
+          this.deleteLoading = false
+          this.$swal("That user's data is safe!")
+        }
+      })
+    },
   },
   head() {
     return {

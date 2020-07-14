@@ -300,7 +300,7 @@ export default {
             this.$emit('Call-Get-Fuction')
             this.$swal(
               'Success',
-              `New User: ${response.username}, with email address: ${response.email} was added successfully`,
+              `New User: ${response.first_name}, with email address: ${response.email} was added successfully`,
               'success'
             )
           })
@@ -325,16 +325,10 @@ export default {
             config
           )
           .then((response) => {
-            this.$store.dispatch('toast/setToast', {
-              name: 'Success',
-              variant: 'success',
-              text: `${response.username} updated sucessfully.`,
-              delay: 5000,
-            })
             this.$emit('Call-Get-Fuction')
             this.$swal(
               'Success',
-              `${response.username} updated Successfully`,
+              `${response.first_name} updated Successfully`,
               'success'
             )
           })
