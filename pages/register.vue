@@ -135,7 +135,7 @@
               <small
                 v-if="!$v.password.required && $v.password.$dirty"
                 class="text-danger"
-                >Required.</small
+                >Password is Required.</small
               >
               <small v-if="!$v.password.minLength" class="text-danger">
                 Password must have at least
@@ -200,7 +200,12 @@
             </b-form-group>
 
             <div class="text-center">
-              <b-btn variant="primary" block @click="signUp">
+              <b-btn
+                variant="primary"
+                block
+                :disabled="isDisabled"
+                @click="signUp"
+              >
                 Sign Up
               </b-btn>
             </div>
@@ -229,10 +234,10 @@ export default {
 
   data() {
     return {
-      userName: '',
-      email: '',
-      password: '',
-      confirm_password: '',
+      userName: null,
+      email: null,
+      password: null,
+      confirm_password: null,
       error: null,
       hidePassword: true,
     }
@@ -264,6 +269,21 @@ export default {
     },
     passwordIcon() {
       return this.hidePassword ? 'eye-fill' : 'eye-slash-fill'
+    },
+    isDisabled() {
+      if (
+        this.userName === null ||
+        this.password === null ||
+        this.confirm_password === null ||
+        this.email === null ||
+        this.$v.userName.$error ||
+        this.$v.password.$error ||
+        this.$v.confirm_password.$error ||
+        this.$v.email.$error
+      ) {
+        return !this.isValid
+      }
+      return this.isValid
     },
   },
 

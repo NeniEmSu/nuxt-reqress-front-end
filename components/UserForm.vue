@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4">
+  <div class="mb-5">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
