@@ -62,6 +62,10 @@
 3. [x] Notifications of success / failure of the operation.  
 4. [x] Validation of form data
 
+## Todos****
+
+- [ ] fix vuex error for mutating state outside mutations.
+
 ## Build Setup
 
 ```bash
