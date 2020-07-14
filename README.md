@@ -20,16 +20,16 @@
 
 ### Navigation
 
-[x] Home and user page.  
-[x] Home page - / - just a blank page.
-[x] Users page- /users - we get a list of Users and display them on page.
-[ ] User page- /users/:id - display single user.
-[x] User page - /user/id
-    - [x] we receive data from the  api, and we display them in the same card as on the page of all users,
-    - [x] only without the "see" button.  
-    - On this page,
-        - [ ] deletion +
-        - [ ] editing is also available, similar to the page of all
+- [x] Home and user page.  
+- [x] Home page - / - just a blank page.
+- [x] Users page- /users - we get a list of Users and display them on page.
+- [ ] User page- /users/:id - display single user.
+- [x] User page - /user/id
+  - [x] we receive data from the  api, and we display them in the same card as on the page of all users,
+  - [x] only without the "see" button.  
+  - On this page,
+    - [x] deletion +
+    - [x] editing is also available, similar to the page of all
 
 ### Requirements
 
@@ -39,20 +39,20 @@
     - [x] email
     - [x] Buttons: Delete, Edit, View
 3. [x] Button to add a new user
-    [x] When you click delete, delete the user through api + locally delete the user.  
-    [x] When you click on edit, we show the modal window for editing the user, we send the data through api + we update the user data locally.  
-    [x] When you click on view, go to the user page.  When you click on add a new user, the modal window for adding (it is also editing) - we send data via api + we add the user locally.
+    - [x] When you click delete, delete the user through api + locally delete the user.  
+    - [x] When you click on edit, we show the modal window for editing the user, we send the data through api + we update the user data locally.  
+    - [x] When you click on view, go to the user page.  When you click on add a new user, the modal window for adding (it is also editing) - we send data via api + we add the user locally.
 
 ## Modal window for adding / editing a user
 
-1. [ ] Name - mandatory/required, minimum 3 characters, maximum 20 (validation optional)
-2. [ ] Workplace - mandatory/required (validation optional)
-3. [ ] Password mandatory/required, minimum 8 characters, maximum 20 (validation optional)
-4. [ ] Password confirmation - mandatory, exact match with the password field. (validation at will)
+1. [x] Name - mandatory/required, minimum 3 characters, maximum 20 (validation optional)
+2. [x] Workplace - mandatory/required (validation optional)
+3. [x] Password mandatory/required, minimum 8 characters, maximum 20 (validation optional)
+4. [x] Password confirmation - mandatory, exact match with the password field. (validation at will)
 
 ## Bonus users (performed as desired)
 
-1. [ ] In the navigation panel, display the data of the last user who passed.  
+1. [x] In the navigation panel, display the data of the last user who passed.  
 2. [x] Display the data loading loaders while the requests are in progress,
     concerns:
     - [x] receiving all users (here you can add the deley parameter delay=3 to the request, where 3 is the seconds of waiting for the request),

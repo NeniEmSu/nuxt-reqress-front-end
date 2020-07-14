@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-5">
     <h1 class="text-center">
       Register
     </h1>
@@ -20,26 +20,82 @@
         <b-card bg-variant="light">
           <form @keydown.enter="signUp">
             <b-form-group label="Username">
-              <b-input
-                ref="userName"
-                v-model="userName"
+              <b-form-input
+                id="userName"
+                v-model.trim="$v.userName.$model"
+                :class="[
+                  !$v.userName.$error &&
+                  $v.userName.$model &&
+                  $v.userName.minLength
+                    ? 'is-valid'
+                    : '',
+                  $v.userName.$error &&
+                  !$v.userName.$model &&
+                  !$v.userName.minLength
+                    ? 'is-invalid'
+                    : '',
+                ]"
+                :state="$v.userName.$dirty ? !$v.userName.$error : null"
                 placeholder="Username"
                 required
+                type="text"
                 name="userName"
-              />
+              ></b-form-input>
+              <small
+                v-if="!$v.userName.required && $v.userName.$dirty"
+                class="text-danger"
+                >User name is required.</small
+              >
+              <small v-if="!$v.userName.minLength" class="text-danger"
+                >User name must have at least
+                {{ $v.userName.$params.minLength.min }}
+                letters.</small
+              >
             </b-form-group>
 
             <b-form-group
               label="Email"
-              description="We'll never share your email with anyone else."
+              :description="
+                !$v.email.$error
+                  ? `We'll never share your email with anyone else.`
+                  : ''
+              "
             >
-              <b-input
-                ref="email"
-                v-model="email"
+              <b-form-input
+                id="email"
+                v-model.trim="$v.email.$model"
                 placeholder="Email address"
                 required
                 name="email"
+                :class="[
+                  !$v.email.$error &&
+                  $v.email.$model &&
+                  $v.email.minLength &&
+                  $v.email.email
+                    ? 'is-valid'
+                    : '',
+                  $v.email.$error &&
+                  !$v.email.$model &&
+                  !$v.email.minLength &&
+                  !$v.email.email
+                    ? 'is-invalid'
+                    : '',
+                ]"
+                :state="$v.email.$dirty ? !$v.email.$error : null"
               />
+              <small
+                v-if="!$v.email.required && $v.email.$dirty"
+                class="text-danger"
+                >Email is required.</small
+              >
+              <small v-if="!$v.email.minLength" class="text-danger"
+                >Email must have at least
+                {{ $v.email.$params.minLength.min }}
+                letters.</small
+              >
+              <small v-if="!$v.email.email" class="text-danger">
+                Email is invalid!
+              </small>
             </b-form-group>
 
             <b-form-group label="Password">
@@ -53,13 +109,45 @@
                   </b-icon>
                 </b-input-group-prepend>
                 <b-input
-                  v-model="password"
+                  id="password"
+                  v-model.trim="$v.password.$model"
                   :type="passwordType"
                   placeholder="password"
                   required
                   name="password"
+                  :class="[
+                    !$v.password.$error &&
+                    $v.password.$model &&
+                    $v.password.minLength &&
+                    $v.password.maxLength
+                      ? 'is-valid'
+                      : '',
+                    $v.password.$error &&
+                    !$v.password.$model &&
+                    !$v.password.minLength &&
+                    !$v.password.maxLength
+                      ? 'is-invalid'
+                      : '',
+                  ]"
+                  :state="$v.password.$dirty ? !$v.password.$error : null"
                 />
               </b-input-group>
+              <small
+                v-if="!$v.password.required && $v.password.$dirty"
+                class="text-danger"
+                >Required.</small
+              >
+              <small v-if="!$v.password.minLength" class="text-danger">
+                Password must have at least
+                {{ $v.password.$params.minLength.min }}
+                letters.
+              </small>
+
+              <small v-if="!$v.password.maxLength" class="text-danger">
+                Password can't be more than
+                {{ $v.password.$params.maxLength.max }}
+                letters.
+              </small>
             </b-form-group>
 
             <b-form-group label="Confirm password">
@@ -72,14 +160,43 @@
                   >
                   </b-icon>
                 </b-input-group-prepend>
-                <b-input
-                  v-model="repeat_password"
+                <b-form-input
+                  id="confirm_password"
+                  v-model.trim="$v.confirm_password.$model"
                   :type="passwordType"
                   placeholder="Confirm password"
                   required
-                  name="repeat_password"
-                />
-              </b-input-group>
+                  name="confirm_password"
+                  :class="[
+                    !$v.confirm_password.$error &&
+                    $v.confirm_password.$model &&
+                    $v.confirm_password.sameAsPassword
+                      ? 'is-valid'
+                      : '',
+                    $v.confirm_password.$error &&
+                    !$v.confirm_password.$model &&
+                    !$v.confirm_password.sameAsPassword
+                      ? 'is-invalid'
+                      : '',
+                  ]"
+                  :state="
+                    $v.confirm_password.$dirty
+                      ? !$v.confirm_password.$error
+                      : null
+                  "
+                /> </b-input-group
+              ><small
+                v-if="
+                  !$v.confirm_password.required && $v.confirm_password.$dirty
+                "
+                class="text-danger"
+                >Required.</small
+              >
+              <small
+                v-if="!$v.confirm_password.sameAsPassword"
+                class="text-danger"
+                >Does not match Password</small
+              >
             </b-form-group>
 
             <div class="text-center">
@@ -98,6 +215,13 @@
 </template>
 
 <script>
+import {
+  required,
+  minLength,
+  maxLength,
+  sameAs,
+  email,
+} from 'vuelidate/lib/validators'
 export default {
   layout: 'admin',
   name: 'Register',
@@ -108,10 +232,30 @@ export default {
       userName: '',
       email: '',
       password: '',
-      repeat_password: '',
+      confirm_password: '',
       error: null,
       hidePassword: true,
     }
+  },
+  validations: {
+    userName: {
+      required,
+      minLength: minLength(4),
+    },
+
+    email: {
+      required,
+      email,
+      minLength: minLength(7),
+    },
+
+    password: {
+      required,
+      minLength: minLength(8),
+      maxLength: maxLength(20),
+    },
+
+    confirm_password: { required, sameAsPassword: sameAs('password') },
   },
 
   computed: {
@@ -131,7 +275,7 @@ export default {
             userName: this.userName,
             email: this.email,
             password: this.password,
-            repeat_password: this.repeat_password,
+            confirm_password: this.confirm_password,
           })
           .then((response) => {
             this.$swal('Success', `User Registerd successfully`, 'success')
