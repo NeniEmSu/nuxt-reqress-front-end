@@ -8,6 +8,13 @@ const config = {
 
 export const state = () => ({
   users: [],
+  user: {},
+  company: {
+    company: 'StatusCode Weekly',
+    text:
+      'A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things.',
+    url: 'http://statuscode.org/',
+  },
   rows: 0,
   errors: [],
   loading: false,
@@ -30,11 +37,14 @@ export const actions = {
     }
   },
 
-  async getSpecificUserUsers({ commit }, userId) {
+  async getSingleUser({ commit }, userId) {
     try {
-      const response = await axios.get(`${URL}/{userId}`, config)
-      const data = await response.data
-      commit('SET_USERS', data)
+      commit('SET_LOADING')
+      const response = await axios.get(`${URL}/${userId}?delay=3`, config)
+      const data = response.data
+      const userData = data.data
+      commit('SET_USER', userData)
+      commit('SET_COMPANY', data)
     } catch (error) {
       commit('SET_ERRORS', error)
       this.$swal('Error', error.message, 'error')
@@ -138,6 +148,15 @@ export const mutations = {
     state.loading = false
   },
 
+  SET_USER(state, data) {
+    state.user = data
+    state.loading = false
+  },
+
+  SET_COMPANY(state, data) {
+    state.company = data.ad
+  },
+
   ADD_NEW_USER(state, data) {
     state.users.unshift(data)
   },
@@ -154,4 +173,8 @@ export const mutations = {
   },
 }
 
-export const getters = {}
+export const getters = {
+  getuserById: (state) => (id) => {
+    return state.users.find((user) => user.id === id)
+  },
+}
