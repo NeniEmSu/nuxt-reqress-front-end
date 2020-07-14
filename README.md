@@ -66,6 +66,8 @@
 
 - [ ] fix vuex error for mutating state outside mutations.
 - [ ] more error handling
+- [ ] create and error page
+- [ ] generate full sitemap and update robot.txt
 
 ## Build Setup
 
